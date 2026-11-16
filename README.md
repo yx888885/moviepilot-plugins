@@ -28,3 +28,7 @@ plugins.v3/<plugin_id>/__init__.py       # 插件源码
 plugins.v3/<plugin_id>/README.md         # 插件说明
 icons/                                   # 插件图标
 ```
+
+## 作者
+
+蜂巢 @yx43842 · 本仓库由蜂巢论坛用户 yx43842 维护，插件问题欢迎在蜂巢论坛反馈。
