@@ -1,0 +1,15 @@
+{
+  "ptrouterhosts": {
+    "name": "PT优选同步中兴Hosts",
+    "description": "从 PT-Accelerator 实时拉取 CF 优选 Hosts，自动同步到中兴问天路由器自定义 Hosts（覆盖同名域名、保留其它条目、写后回读校验）。",
+    "labels": "网络,PT,路由器",
+    "version": "1.0",
+    "icon": "https://raw.githubusercontent.com/yx888885/moviepilot-plugins/main/icons/ptrouterhosts.png",
+    "author": "yx888885",
+    "level": 1,
+    "system_version": ">=3.0.0",
+    "history": {
+      "v1.0": "首个版本：从 PT-Accelerator /api/current-hosts 拉取优选结果，写入中兴问天路由器自定义 Hosts。"
+    }
+  }
+}
