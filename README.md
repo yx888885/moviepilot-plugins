@@ -8,6 +8,10 @@ MoviePilot V3 自定义插件仓库。
 | --- | --- | --- |
 | [ptrouterhosts](plugins.v3/ptrouterhosts/README.md) | PT优选同步中兴Hosts | 从 PT-Accelerator 拉取 CF 优选 Hosts，同步到中兴问天路由器 |
 
+## 完整教程
+
+从零部署到全家终端生效的整条链路（含 pt-accelerator 镜像容器安装、插件安装、路由器同步、验证），见 [docs/tutorial.md](docs/tutorial.md)。
+
 ## 安装
 
 在 MoviePilot V3 **系统设置 → 插件市场** 添加仓库地址：
