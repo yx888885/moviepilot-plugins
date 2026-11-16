@@ -1,6 +1,6 @@
 # PT 优选加速一条龙部署教程
 
-本教程把「Cloudflare 优选 → NAS hosts → 中兴问天路由器」整条链路串起来，从零部署到全家终端生效。
+本教程把「Cloudflare 优选 → NAS hosts → 中兴问天路由器」整条链路串起来。
 
 ## 整体架构
 
@@ -26,75 +26,25 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
-> 注意：镜像容器叫 **pt-accelerator**（上游项目 `eternalcurse/pt-accelerator`），
-> **PTRouterHosts / ptrouterhosts 是 MP 插件的名字**，两者不是一回事。
+> 说明：镜像容器叫 **pt-accelerator**，是上游开源项目
+> [eternalcurse/PT-Accelerator](https://github.com/eternalcurse/PT-Accelerator)；
+> **ptrouterhosts 是本仓库的 MP 插件**，负责把优选结果同步到中兴路由器，两者不是一回事。
 
 ---
 
-## 第一步：部署 pt-accelerator 镜像容器
+## 第一步：部署 pt-accelerator 镜像容器（数据源）
 
-这是整套方案的数据源，**必须先装**。
+这是整套方案的数据源，**必须先装**。它是上游开源项目，部署步骤、配置说明、Web 界面用法请直接看原作者仓库：
 
-### 1. 准备目录
+👉 **https://github.com/eternalcurse/PT-Accelerator**
 
-```bash
-mkdir -p /你的docker目录/pt-accelerator/{config,logs}
-```
+（项目自带的 README 有 Docker 一键部署、docker-compose、配置说明和常见问题，请以原作者的文档为准。）
 
-### 2. 编写 docker-compose.yml
-
-在 `/你的docker目录/pt-accelerator/` 下新建 `docker-compose.yml`：
-
-```yaml
-services:
-  pt-accelerator:
-    image: eternalcurse/pt-accelerator:latest
-    container_name: pt-accelerator
-    restart: unless-stopped
-    network_mode: "host"
-    environment:
-      - TZ=Asia/Shanghai
-      - APP_PORT=23333
-    volumes:
-      # 配置持久化（防止重启丢设置）
-      - /你的docker目录/pt-accelerator/config:/app/config
-      # 日志持久化
-      - /你的docker目录/pt-accelerator/logs:/app/logs
-      # 关键！挂载宿主机 /etc/hosts，容器才有权限改写它
-      - /etc/hosts:/etc/hosts
-```
-
-> 路径 `/你的docker目录/` 换成你自己的实际目录。
-> 网络用 host 模式；`APP_PORT` 默认 23333，可改。
-
-### 3. 启动
-
-```bash
-cd /你的docker目录/pt-accelerator
-docker compose up -d
-```
-
-### 4. 打开 Web 界面
-
-浏览器访问 `http://NAS的IP:23333`，进入配置页（若开了认证需登录）。
+> 本插件只依赖它提供的 `:23333/api/current-hosts` 数据接口，其余功能（优选、Tracker 管理、下载器导入等）均在原作者项目里配置。
 
 ---
 
-## 第二步：配置 pt-accelerator（Web 界面）
-
-所有配置在 Web 界面实时生效，无需手改 yaml。建议配这几项：
-
-1. **Cloudflare 优选**：`enable` 打开，`cron` 设 `0 7 * * *`（每天 07:00）。
-2. **PT Tracker 列表**：逐个添加你要加速的 PT 站点 tracker 域名（Cloudflare 托管的才会被优选，非 CF 站点会自动过滤）。
-3. **Hosts 源**：按需启用 GitHub / TMDB 等加速源（默认已带一批）。
-4. **下载器导入**（可选）：把 qBittorrent / Transmission 加进来，用于 tracker 批量管理。
-5. **认证**（可选）：开启后访问 Web 界面需要账号密码。
-
-配置完等一次优选执行（或手动触发），确认 NAS `/etc/hosts` 里出现 `PT-Accelerator START / END` 段，且 `:23333/api/current-hosts` 能返回数据即可。
-
----
-
-## 第三步：安装 MP 插件 ptrouterhosts
+## 第二步：安装 MP 插件 ptrouterhosts
 
 1. 打开 MoviePilot V3 → **系统设置 → 插件市场**。
 2. 添加仓库地址：
@@ -107,7 +57,7 @@ https://github.com/yx888885/moviepilot-plugins
 
 ---
 
-## 第四步：配置插件
+## 第三步：配置插件
 
 进插件设置页，填：
 
@@ -126,7 +76,7 @@ https://github.com/yx888885/moviepilot-plugins
 
 ---
 
-## 第五步：验证是否生效
+## 第四步：验证是否生效
 
 在 NAS 上查路由器 DNS（别只看本机，要直接问路由器）：
 

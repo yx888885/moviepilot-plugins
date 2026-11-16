@@ -10,7 +10,7 @@ MoviePilot V3 自定义插件仓库。
 
 ## 完整教程
 
-从零部署到全家终端生效的整条链路（含 pt-accelerator 镜像容器安装、插件安装、路由器同步、验证），见 [docs/tutorial.md](docs/tutorial.md)。
+从零部署到全家终端生效的整条链路（pt-accelerator 数据源 → 插件安装 → 路由器同步 → 验证），见 [docs/tutorial.md](docs/tutorial.md)。其中 pt-accelerator 镜像的部署步骤请参考原作者仓库 [eternalcurse/PT-Accelerator](https://github.com/eternalcurse/PT-Accelerator)。
 
 ## 安装
 
